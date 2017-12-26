@@ -1,0 +1,36 @@
+{
+  "name": "ooca-realtime-module",
+  "version": "0.0.1",
+  "description": "Ooca-realtime-module",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mzget/ooca-realtime-module.git"
+  },
+  "keywords": [
+    "stalk-js",
+    "S-Talk"
+  ],
+  "author": "nattapon.r <nattapon.r@live.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mzget/ooca-realtime-module/issues"
+  },
+  "homepage": "https://github.com/mzget/ooca-realtime-module#readme",
+  "dependencies": {
+    "async": "^2.6.0",
+    "redux": "^3.7.2",
+    "redux-actions": "^2.2.1",
+    "rxjs": "^5.5.6",
+    "stalk-js": "git+https://github.com/mzget/s-talk-js-client.git#develop"
+  },
+  "devDependencies": {
+    "@types/node": "^8.5.2",
+    "@types/redux": "^3.6.0",
+    "@types/redux-actions": "^2.2.3",
+    "redux-logger": "^3.0.6"
+  }
+}

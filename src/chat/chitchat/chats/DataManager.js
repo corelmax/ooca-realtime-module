@@ -1,65 +1,45 @@
-import * as async from "async";
-import { stalkEvents } from "stalk-js";
-
-import { StalkAccount, RoomAccessData } from "../shared/Stalk";
-
-import { ContactInfo } from "./models/Contact";
-import { RoomType, MemberRole, Room } from "./models/Room";
-
-import { IRoomDAL } from "./dataAccessLayer/IRoomDAL";
-import { RoomDALFactory } from "./dataAccessLayer/RoomDALFactory";
-import { IMessageDAL } from "./dataAccessLayer/IMessageDAL";
-// import { MessageDALFactory } from "./dataAccessLayer/messageDALFactory";
-
-interface IRoomMap {
-    [key: string]: Room;
-}
-interface IMemberMep {
-    [key: string]: ContactInfo;
-}
-
-export class DataManager {
-    private myProfile: StalkAccount;
-    public orgGroups: IRoomMap = {};
-    public projectBaseGroups: IRoomMap = {};
-    public privateGroups: IRoomMap = {};
-    public privateChats: IRoomMap = {};
-    private contactsMember: IMemberMep = {};
-    public isOrgMembersReady: boolean = false;
-    public onMyProfileReady: (dataManager: DataManager) => void;
-
-    public onOrgGroupDataReady: () => void;
-    public onProjectBaseGroupsDataReady: () => void;
-    public onPrivateGroupsDataReady: () => void;
-    public onContactsDataReady: () => void;
-    public contactsProfileChanged: (contact: ContactInfo) => void;
-    public getContactInfoFailEvents: Array<(contact_id: string) => void> = new Array();
-    public addContactInfoFailEvents(func: (contact_id: string) => void) {
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const async = require("async");
+const Room_1 = require("./models/Room");
+class DataManager {
+    constructor() {
+        this.orgGroups = {};
+        this.projectBaseGroups = {};
+        this.privateGroups = {};
+        this.privateChats = {};
+        this.contactsMember = {};
+        this.isOrgMembersReady = false;
+        this.getContactInfoFailEvents = new Array();
+        console.log("userAgent", global.userAgent);
+        // this.messageDAL = MessageDALFactory.getObject();
+    }
+    addContactInfoFailEvents(func) {
         this.getContactInfoFailEvents.push(func);
     }
-    public removeContactInfoFailEvents(func: (contact_id: string) => void) {
+    removeContactInfoFailEvents(func) {
         let id = this.getContactInfoFailEvents.indexOf(func);
         this.getContactInfoFailEvents.splice(id, 1);
     }
-
-    public messageDAL: IMessageDAL;
-
-    constructor() {
-        console.log("userAgent", global.userAgent);
-
-        // this.messageDAL = MessageDALFactory.getObject();
-    }
-
     // @ Profile...
-    public getMyProfile(): StalkAccount {
+    getMyProfile() {
         return this.myProfile;
     }
-    public async setProfile(data: StalkAccount) {
-        this.myProfile = data;
-
-        return await this.myProfile;
+    setProfile(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.myProfile = data;
+            return yield this.myProfile;
+        });
     }
-    public setRoomAccessForUser(data: StalkAccount) {
+    setRoomAccessForUser(data) {
         if (!!this.myProfile && !!data.roomAccess) {
             this.myProfile.roomAccess = data.roomAccess;
         }
@@ -67,24 +47,21 @@ export class DataManager {
             this.myProfile = data;
         }
     }
-    public updateRoomAccessForUser(data: RoomAccessData) {
-        if (!this.myProfile.roomAccess) return;
-
+    updateRoomAccessForUser(data) {
+        if (!this.myProfile.roomAccess)
+            return;
         this.myProfile.roomAccess.forEach(value => {
             if (value.roomId === data.roomId) {
                 value.accessTime = data.accessTime;
-
                 return;
             }
         });
     }
-
     // public getRoomAccess(): RoomAccessData[] {
     //     return this.myProfile.roomAccess;
     // }
-
     // <!---------- Group ------------------------------------
-    public updateGroupImage(data: Room) {
+    updateGroupImage(data) {
         if (!!this.orgGroups[data._id]) {
             this.orgGroups[data._id].image = data.image;
         }
@@ -95,7 +72,7 @@ export class DataManager {
             this.privateGroups[data._id].image = data.image;
         }
     }
-    public updateGroupName(data: Room) {
+    updateGroupName(data) {
         if (!!this.orgGroups[data._id]) {
             this.orgGroups[data._id].owner = data.owner;
         }
@@ -106,12 +83,11 @@ export class DataManager {
             this.privateGroups[data._id].owner = data.owner;
         }
     }
-    public updateGroupMembers(data: Room) {
+    updateGroupMembers(data) {
         // <!-- Beware please checking myself before update group members.
         // <!-- May be your id is removed from group.
         let hasMe = this.checkMySelfInNewMembersReceived(data);
-
-        if (data.type === RoomType.organizationGroup) {
+        if (data.type === Room_1.RoomType.organizationGroup) {
             if (!!this.orgGroups[data._id]) {
                 // <!-- This statement call when current you still a member.
                 if (hasMe) {
@@ -125,7 +101,7 @@ export class DataManager {
                 this.orgGroups[data._id] = data;
             }
         }
-        else if (data.type === RoomType.projectBaseGroup) {
+        else if (data.type === Room_1.RoomType.projectBaseGroup) {
             if (!!this.projectBaseGroups[data._id]) {
                 if (hasMe) {
                     this.projectBaseGroups[data._id].visibility = true;
@@ -139,7 +115,7 @@ export class DataManager {
                 this.projectBaseGroups[data._id] = data;
             }
         }
-        else if (data.type === RoomType.privateGroup) {
+        else if (data.type === Room_1.RoomType.privateGroup) {
             if (!!this.privateGroups[data._id]) {
                 if (hasMe) {
                     this.privateGroups[data._id].visibility = true;
@@ -154,52 +130,44 @@ export class DataManager {
                 this.privateGroups[data._id] = data;
             }
         }
-
         console.log("dataManager.updateGroupMembers:");
     }
-    public updateGroupMemberDetail(jsonObj: any) {
+    updateGroupMemberDetail(jsonObj) {
         let editMember = jsonObj.editMember;
         let roomId = jsonObj.roomId;
-
-        let groupMember: Member = null;
+        let groupMember = null;
         groupMember.id = editMember.id;
-        let role = <string>editMember.role;
-        groupMember.role = MemberRole[role];
+        let role = editMember.role;
+        groupMember.role = Room_1.MemberRole[role];
         groupMember.jobPosition = editMember.jobPosition;
-
         this.getGroup(roomId).members.forEach((value, index, arr) => {
             if (value.id === groupMember.id) {
                 this.getGroup(roomId).members[index].role = groupMember.role;
-                this.getGroup(roomId).members[index].textRole = MemberRole[groupMember.role];
+                this.getGroup(roomId).members[index].textRole = Room_1.MemberRole[groupMember.role];
                 this.getGroup(roomId).members[index].jobPosition = groupMember.jobPosition;
             }
         });
     }
-
-    private checkMySelfInNewMembersReceived(data: Room): boolean {
+    checkMySelfInNewMembersReceived(data) {
         let self = this;
         let hasMe = data.members.some(function isMySelfId(element, index, array) {
             return element.id === self.myProfile._id;
         });
-
         console.log("New data has me", hasMe);
         return hasMe;
     }
-
     // <!------------------------------------------------------
-
     /**
      * Contacts ....
      */
-    public onUserLogin(dataEvent) {
+    onUserLogin(dataEvent) {
     }
-
-    public updateContactImage(contactId: string, url: string) {
+    updateContactImage(contactId, url) {
         if (!!this.contactsMember[contactId]) {
             this.contactsMember[contactId].image = url;
         }
     }
-    public updateContactProfile(contactId: string, params: any) {
+    updateContactProfile(contactId, params) {
         if (!!this.contactsMember[contactId]) {
             let jsonObj = JSON.parse(JSON.stringify(params));
             if (!!jsonObj.displayname) {
@@ -210,95 +178,86 @@ export class DataManager {
             }
         }
     }
-    public setContactProfile(contactId: string, contact: ContactInfo) {
+    setContactProfile(contactId, contact) {
         if (!this.contactsMember)
             this.contactsMember = {};
-
         if (!this.contactsMember[contactId]) {
             this.contactsMember[contactId] = contact;
-
             if (!!this.contactsProfileChanged)
                 this.contactsProfileChanged(contact);
-
             console.log("Need to save contacts list to persistence data layer.");
         }
     }
-    public onGetCompanyMemberComplete(dataEvent) {
+    onGetCompanyMemberComplete(dataEvent) {
         let self = this;
-        let members: Array<ContactInfo> = JSON.parse(JSON.stringify(dataEvent));
-
-        if (!this.contactsMember) this.contactsMember = {};
-
+        let members = JSON.parse(JSON.stringify(dataEvent));
+        if (!this.contactsMember)
+            this.contactsMember = {};
         async.eachSeries(members, function iterator(item, cb) {
             if (!self.contactsMember[item._id]) {
                 self.contactsMember[item._id] = item;
             }
-
             cb();
         }, function done(err) {
             self.isOrgMembersReady = true;
         });
-
         if (this.onContactsDataReady != null)
             this.onContactsDataReady();
-    };
-
+    }
+    ;
     /**
      * Company...
      */
-    public onGetCompanyInfo(dataEvent) {
-
+    onGetCompanyInfo(dataEvent) {
     }
-    public onGetOrganizeGroupsComplete(dataEvent) {
-        let rooms: Array<Room> = JSON.parse(JSON.stringify(dataEvent));
+    onGetOrganizeGroupsComplete(dataEvent) {
+        let rooms = JSON.parse(JSON.stringify(dataEvent));
         if (!this.orgGroups)
             this.orgGroups = {};
-
         rooms.forEach(value => {
             if (!this.orgGroups[value._id]) {
                 this.orgGroups[value._id] = value;
             }
         });
-
         if (this.onOrgGroupDataReady != null) {
             this.onOrgGroupDataReady();
         }
-    };
-    public onGetProjectBaseGroupsComplete(dataEvent) {
-        let groups: Array<Room> = JSON.parse(JSON.stringify(dataEvent));
-
-        if (!this.projectBaseGroups) this.projectBaseGroups = {};
-
+    }
+    ;
+    onGetProjectBaseGroupsComplete(dataEvent) {
+        let groups = JSON.parse(JSON.stringify(dataEvent));
+        if (!this.projectBaseGroups)
+            this.projectBaseGroups = {};
         groups.forEach(value => {
             if (!this.projectBaseGroups[value._id]) {
                 this.projectBaseGroups[value._id] = value;
             }
         });
-
         if (this.onProjectBaseGroupsDataReady != null) {
             this.onProjectBaseGroupsDataReady();
         }
-    };
-    public onGetPrivateGroupsComplete(dataEvent) {
-        let groups: Array<Room> = JSON.parse(JSON.stringify(dataEvent));
-
-        if (!this.privateGroups) this.privateGroups = {};
-
+    }
+    ;
+    onGetPrivateGroupsComplete(dataEvent) {
+        let groups = JSON.parse(JSON.stringify(dataEvent));
+        if (!this.privateGroups)
+            this.privateGroups = {};
         groups.forEach(value => {
             if (!this.privateGroups[value._id]) {
                 this.privateGroups[value._id] = value;
             }
         });
-
         if (this.onPrivateGroupsDataReady != null) {
             this.onPrivateGroupsDataReady();
         }
-    };
-
+    }
+    ;
     onGetMe() { }
-
-    public isMySelf(uid: string): boolean {
-        if (uid === this.myProfile._id) return true;
-        else return false;
+    isMySelf(uid) {
+        if (uid === this.myProfile._id)
+            return true;
+        else
+            return false;
     }
 }
+exports.DataManager = DataManager;
