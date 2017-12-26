@@ -82,7 +82,7 @@ export class BackendFactory {
         msg["x-api-key"] = getConfig().Stalk.apiKey;
         msg["x-api-version"] = getConfig().Stalk.apiVersion;
         msg["x-app-id"] = getConfig().Stalk.appId;
-        let result = await stalkjs.checkIn(this.stalk, msg);
+        let result = await stalkjs.checkIn(this.stalk, msg) as any;
         return result;
     }
 

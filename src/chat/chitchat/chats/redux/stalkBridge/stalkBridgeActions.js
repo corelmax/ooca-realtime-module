@@ -112,9 +112,12 @@ function stalkManageConnection() {
 }
 function stalkLogout() {
     return __awaiter(this, void 0, void 0, function* () {
-        const backendFactory = BackendFactory_1.BackendFactory.getInstance();
         getStore().dispatch(stalkLogoutSuccess());
-        return yield backendFactory.logout();
+        const backendFactory = BackendFactory_1.BackendFactory.getInstance();
+        if (backendFactory) {
+            backendFactory.logout();
+        }
+        return Promise.resolve();
     });
 }
 exports.stalkLogout = stalkLogout;

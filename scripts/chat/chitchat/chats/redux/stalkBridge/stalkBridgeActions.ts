@@ -115,7 +115,12 @@ async function stalkManageConnection() {
 }
 
 export async function stalkLogout() {
-    const backendFactory = BackendFactory.getInstance();
     getStore().dispatch(stalkLogoutSuccess());
-    return await backendFactory.logout();
+
+    const backendFactory = BackendFactory.getInstance();
+    if (backendFactory) {
+        backendFactory.logout();
+    }
+
+    return Promise.resolve();
 }
