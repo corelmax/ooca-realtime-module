@@ -1,24 +1,24 @@
 "use strict";
-class SecureService {
-    constructor() {
+var SecureService = /** @class */ (function () {
+    function SecureService() {
         this.key = "CHITCHAT!@#$%^&*()_+|===";
         this.passiv = "ThisIsUrPassword";
     }
-    hashCompute(content, callback) {
+    SecureService.prototype.hashCompute = function (content, callback) {
         require(["../lib/crypto-js/crypto-js"], function (CryptoJS) {
             var hash = CryptoJS.MD5(content);
             var md = hash.toString(CryptoJS.enc.Hex);
             callback(null, md);
         });
-    }
-    encryption(content, callback) {
+    };
+    SecureService.prototype.encryption = function (content, callback) {
         var self = this;
         require(["../lib/crypto-js/crypto-js"], function (CryptoJS) {
             var ciphertext = CryptoJS.AES.encrypt(content, self.key);
             callback(null, ciphertext.toString());
         });
-    }
-    decryption(content, callback) {
+    };
+    SecureService.prototype.decryption = function (content, callback) {
         var self = this;
         require(["../lib/crypto-js/crypto-js"], function (CryptoJS) {
             //   var words = CryptoJS.enc.Base64.parse(content);
@@ -26,8 +26,8 @@ class SecureService {
             var plaintext = bytes.toString(CryptoJS.enc.Utf8);
             callback(null, plaintext);
         });
-    }
-    encryptWithSecureRandom(content, callback) {
+    };
+    SecureService.prototype.encryptWithSecureRandom = function (content, callback) {
         var self = this;
         require(["../lib/crypto-js/crypto-js"], function (CryptoJS) {
             var key = CryptoJS.enc.Utf8.parse(self.key);
@@ -35,8 +35,8 @@ class SecureService {
             var ciphertext = CryptoJS.AES.encrypt(content, key, { iv: iv });
             callback(null, ciphertext.toString());
         });
-    }
-    decryptWithSecureRandom(content, callback) {
+    };
+    SecureService.prototype.decryptWithSecureRandom = function (content, callback) {
         var self = this;
         require(["../lib/crypto-js/crypto-js"], function (CryptoJS) {
             var key = CryptoJS.enc.Utf8.parse(self.key);
@@ -54,5 +54,6 @@ class SecureService {
             else
                 callback(new Error("cannot decrypt content"), content);
         });
-    }
-}
+    };
+    return SecureService;
+}());

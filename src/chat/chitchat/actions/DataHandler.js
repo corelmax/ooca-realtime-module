@@ -1,23 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Chitchat_1 = require("../../Chitchat");
-const getUsersPayload_1 = require("./users/getUsersPayload");
-exports.OnPushHandler = (data) => {
+var Chitchat_1 = require("../../Chitchat");
+var getUsersPayload_1 = require("./users/getUsersPayload");
+exports.OnPushHandler = function (data) {
     console.log("OnPushHandler", data);
-    const getStore = () => Chitchat_1.chitchatFactory.getStore();
+    var getStore = function () { return Chitchat_1.chitchatFactory.getStore(); };
     if (data.event == "activeUser") {
-        getUsersPayload_1.getUsersPayload().then(value => {
+        getUsersPayload_1.getUsersPayload().then(function (value) {
             console.log(value);
-        }).catch(error => {
+        }).catch(function (error) {
             console.warn(error);
         });
     }
 };
-exports.OnDataHandler = (data) => {
+exports.OnDataHandler = function (data) {
     console.log("OnDataHandler", data);
-    getUsersPayload_1.getUsersPayload().then(value => {
+    getUsersPayload_1.getUsersPayload().then(function (value) {
         console.log(value);
-    }).catch(error => {
+    }).catch(function (error) {
         console.warn(error);
     });
 };

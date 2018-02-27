@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class ChitChatFactory {
-    constructor() {
+var ChitChatFactory = /** @class */ (function () {
+    function ChitChatFactory() {
         this.appStore = { appState: "active" }; // active, background, inactive
     }
-    static getInstance() {
+    ChitChatFactory.getInstance = function () {
         return ChitChatFactory.instance;
-    }
-    static createInstance() {
+    };
+    ChitChatFactory.createInstance = function () {
         if (ChitChatFactory.instance === null || ChitChatFactory.instance === undefined) {
             ChitChatFactory.instance = new ChitChatFactory();
             return ChitChatFactory.instance;
@@ -15,28 +15,29 @@ class ChitChatFactory {
         else {
             return ChitChatFactory.instance;
         }
-    }
-    initStore(_store) {
+    };
+    ChitChatFactory.prototype.initStore = function (_store) {
         this.store = _store;
-    }
-    initConfig(_config) {
+    };
+    ChitChatFactory.prototype.initConfig = function (_config) {
         this.config = _config;
-    }
-    initSecureService() {
+    };
+    ChitChatFactory.prototype.initSecureService = function () {
         if (this.config.appConfig.encryption === true) {
             // SecureServiceFactory.createService(this.config.appConfig.secret);
         }
-    }
-    getStore() { return this.store; }
-    getConfig() { return this.config; }
-    setAuthStore(user, chitchat_token) {
+    };
+    ChitChatFactory.prototype.getStore = function () { return this.store; };
+    ChitChatFactory.prototype.getConfig = function () { return this.config; };
+    ChitChatFactory.prototype.setAuthStore = function (user, chitchat_token) {
         this.authStore = { user: user, chitchat_token: chitchat_token };
-    }
-    setTeamStore(store) {
+    };
+    ChitChatFactory.prototype.setTeamStore = function (store) {
         this.teamStore = store;
-    }
-    setAppStore(store) {
+    };
+    ChitChatFactory.prototype.setAppStore = function (store) {
         this.appStore = store;
-    }
-}
+    };
+    return ChitChatFactory;
+}());
 exports.ChitChatFactory = ChitChatFactory;

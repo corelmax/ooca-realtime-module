@@ -5,18 +5,21 @@
  * Copyright 2016 Ahoo Studio.co.th.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-const REACT_NATIVE = "react-native";
-const REACTJS = "react-js";
-class MessageDALFactory {
-    static getObject() {
+var REACT_NATIVE = "react-native";
+var REACTJS = "react-js";
+var MessageDALFactory = /** @class */ (function () {
+    function MessageDALFactory() {
+    }
+    MessageDALFactory.getObject = function () {
         if (!!global.userAgent && global.userAgent === REACTJS) {
             // const { MessageDAL } = require("./messageDAL");
             // return new MessageDAL();
         }
         else if (!!global.userAgent && global.userAgent === REACT_NATIVE) {
-            const { NodeMessageDAL } = require("./nodeMessageDAL");
+            var NodeMessageDAL = require("./nodeMessageDAL").NodeMessageDAL;
             return new NodeMessageDAL();
         }
-    }
-}
+    };
+    return MessageDALFactory;
+}());
 exports.MessageDALFactory = MessageDALFactory;

@@ -8,24 +8,24 @@
  *
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-const BackendFactory_1 = require("../../BackendFactory");
-const Message_1 = require("../../../shared/Message");
-const ChitChatFactory_1 = require("../../ChitChatFactory");
-const getStore = () => ChitChatFactory_1.ChitChatFactory.getInstance().store;
+var BackendFactory_1 = require("../../BackendFactory");
+var Message_1 = require("../../../shared/Message");
+var ChitChatFactory_1 = require("../../ChitChatFactory");
+var getStore = function () { return ChitChatFactory_1.ChitChatFactory.getInstance().store; };
 exports.STALK_NOTICE_NEW_MESSAGE = "STALK_NOTICE_NEW_MESSAGE";
-const stalkNotiNewMessage = (payload) => ({ type: exports.STALK_NOTICE_NEW_MESSAGE, payload });
-const init = (onSuccess) => {
+var stalkNotiNewMessage = function (payload) { return ({ type: exports.STALK_NOTICE_NEW_MESSAGE, payload: payload }); };
+var init = function (onSuccess) {
     console.log("Initialize NotificationManager.");
 };
-exports.regisNotifyNewMessageEvent = () => {
+exports.regisNotifyNewMessageEvent = function () {
     console.log("subscribe global notify message event");
     BackendFactory_1.BackendFactory.getInstance().dataListener.addOnChatListener(exports.notify);
 };
-exports.unsubscribeGlobalNotifyMessageEvent = () => {
+exports.unsubscribeGlobalNotifyMessageEvent = function () {
     BackendFactory_1.BackendFactory.getInstance().dataListener.removeOnChatListener(exports.notify);
 };
-exports.notify = (messageImp) => {
-    let message = {
+exports.notify = function (messageImp) {
+    var message = {
         title: messageImp.user.username,
         image: messageImp.user.avatar
     };
@@ -34,7 +34,7 @@ exports.notify = (messageImp) => {
         getStore().dispatch(stalkNotiNewMessage(message));
     }
     else {
-        message.body = `Sent you ${messageImp.type.toLowerCase()}`;
+        message.body = "Sent you " + messageImp.type.toLowerCase();
         getStore().dispatch(stalkNotiNewMessage(message));
     }
 };

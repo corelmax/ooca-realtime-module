@@ -1,16 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Message_1 = require("../../chitchat/shared/Message");
-const MessageImp_1 = require("../../chitchat/chats/models/MessageImp");
-const ChitChatFactory_1 = require("../../chitchat/chats/ChitChatFactory");
-const getStore = () => ChitChatFactory_1.ChitChatFactory.getInstance().store;
-const getAuth = () => ChitChatFactory_1.ChitChatFactory.getInstance().authStore;
+var Message_1 = require("../../chitchat/shared/Message");
+var MessageImp_1 = require("../../chitchat/chats/models/MessageImp");
+var ChitChatFactory_1 = require("../../chitchat/chats/ChitChatFactory");
+var getStore = function () { return ChitChatFactory_1.ChitChatFactory.getInstance().store; };
+var getAuth = function () { return ChitChatFactory_1.ChitChatFactory.getInstance().authStore; };
 function decorateMessage(msg) {
-    let { chatroomReducer } = getStore().getState();
-    let { user } = getAuth();
+    var chatroomReducer = getStore().getState().chatroomReducer;
+    var user = getAuth().user;
     console.log(user);
-    let { userid, fullName, picLink } = user;
-    let message = new MessageImp_1.MessageImp();
+    var userid = user.userid, fullName = user.fullName, picLink = user.picLink;
+    var message = new MessageImp_1.MessageImp();
     if (!!msg.image) {
         message.body = msg.image;
         message.src = msg.src;
@@ -38,12 +38,12 @@ function decorateMessage(msg) {
     else {
         throw new Error("What the fuck!");
     }
-    const room = chatroomReducer.get("room");
+    var room = chatroomReducer.get("room");
     message.rid = room._id;
     message.sender = userid;
     message.user = {
         _id: userid,
-        username: `${fullName}`,
+        username: "" + fullName,
         avatar: picLink
     };
     message.target = chatroomReducer.get("chatTargets");
@@ -52,4 +52,6 @@ function decorateMessage(msg) {
     return message;
 }
 exports.decorateMessage = decorateMessage;
-exports.getDateTime = (time) => (`${time.getFullYear()}/${time.getMonth()}/${time.getDate()} ${time.getHours()}:${time.getMinutes()}`);
+exports.getDateTime = function (time) {
+    return (time.getFullYear() + "/" + time.getMonth() + "/" + time.getDate() + " " + time.getHours() + ":" + time.getMinutes());
+};

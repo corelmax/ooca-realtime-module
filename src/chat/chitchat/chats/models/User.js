@@ -1,15 +1,24 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 ;
-class OnlineUser {
-}
+var OnlineUser = /** @class */ (function () {
+    function OnlineUser() {
+    }
+    return OnlineUser;
+}());
 exports.OnlineUser = OnlineUser;
 ;
-class UserTransaction {
-}
+var UserTransaction = /** @class */ (function () {
+    function UserTransaction() {
+    }
+    return UserTransaction;
+}());
 exports.UserTransaction = UserTransaction;
 ;
-class ChitChatAccount {
-}
+var ChitChatAccount = /** @class */ (function () {
+    function ChitChatAccount() {
+    }
+    return ChitChatAccount;
+}());
 exports.ChitChatAccount = ChitChatAccount;
 ;

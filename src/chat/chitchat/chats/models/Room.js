@@ -21,6 +21,9 @@ var RoomStatus;
     RoomStatus[RoomStatus["delete"] = 2] = "delete";
 })(RoomStatus = exports.RoomStatus || (exports.RoomStatus = {}));
 ;
-class Room {
-}
+var Room = /** @class */ (function () {
+    function Room() {
+    }
+    return Room;
+}());
 exports.Room = Room;

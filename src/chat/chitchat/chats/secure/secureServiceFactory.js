@@ -1,17 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const nodeSecureService_1 = require("./nodeSecureService");
+var nodeSecureService_1 = require("./nodeSecureService");
 /**
  * SecureServiceFactory
  */
-class SecureServiceFactory {
-    static createService(secret_key) {
+var SecureServiceFactory = /** @class */ (function () {
+    function SecureServiceFactory() {
+    }
+    SecureServiceFactory.createService = function (secret_key) {
         if (!SecureServiceFactory.service)
             SecureServiceFactory.service = new nodeSecureService_1.NodeSecureService(secret_key);
         return SecureServiceFactory.service;
-    }
-    static getService() {
+    };
+    SecureServiceFactory.getService = function () {
         return SecureServiceFactory.service;
-    }
-}
+    };
+    return SecureServiceFactory;
+}());
 exports.SecureServiceFactory = SecureServiceFactory;

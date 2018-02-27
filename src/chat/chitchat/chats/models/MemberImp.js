@@ -1,5 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class MemberImp {
-}
+var MemberImp = /** @class */ (function () {
+    function MemberImp() {
+    }
+    return MemberImp;
+}());
 exports.MemberImp = MemberImp;

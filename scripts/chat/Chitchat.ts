@@ -2,11 +2,11 @@ import { ChitChatFactory } from "./chitchat/chats/ChitChatFactory";
 import { IConfig, IChitChatApi, IStalkApi } from "./chitchat/chats/iConfig";
 export const chitchatFactory = ChitChatFactory.createInstance();
 
-const apiStalk = "wss://chitchats.ga"; // wss://chitchats.ga
+const apiStalk = `${process.env.STALK_ENDPOINT}`; // wss://chitchats.ga
 const stalkPort = 3020;
 const stalkKey = "ooca1234";
 const stalkApiVersion = "0.2";
-const stalkAppId = "ooca";
+const stalkAppId = `${process.env.STALK_APP_ID}`;
 const chatapi = "http://chitchats.ga:8998"; // "http://localhost:9000"; "http://git.animation-genius.com:9000"
 
 export const config = {
