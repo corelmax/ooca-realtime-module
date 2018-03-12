@@ -44,11 +44,10 @@ exports.FETCH_USERS_PAYLOAD = "FETCH_USERS_PAYLOAD";
 var fetchUsersPayloadSuccess = redux_actions_1.createAction(exports.FETCH_USERS_PAYLOAD, function (payload) { return payload; });
 function getUsersPayload() {
     return __awaiter(this, void 0, void 0, function () {
-        var backendFactory, server, msg, result, ex_1;
+        var backendFactory, server, msg, result;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 2, , 4]);
                     backendFactory = BackendFactory_1.BackendFactory.getInstance();
                     server = backendFactory.getServer();
                     msg = {};
@@ -62,11 +61,6 @@ function getUsersPayload() {
                         store().dispatch(fetchUsersPayloadSuccess(result.data.value));
                     }
                     return [2 /*return*/, result];
-                case 2:
-                    ex_1 = _a.sent();
-                    return [4 /*yield*/, ex_1];
-                case 3: return [2 /*return*/, _a.sent()];
-                case 4: return [2 /*return*/];
             }
         });
     });
